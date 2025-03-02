@@ -34,7 +34,7 @@ export default {
 		if (pp) {
 			proxyPort = parseInt(atob(pp));
 		}
-		
+
 		try {
 			if (request.headers.get('Upgrade') === 'websocket') {
 				return await overWSHandler(request);
@@ -188,11 +188,11 @@ async function handleTCPOutBound(remoteSocket, addressRemote, portRemote, rawCli
 		remoteSocketToWS(tcpSocket, webSocket, responseHeader, null, log);
 	}
 
-	const tcpSocket = await connectAndWrite(addressRemote, portRemote);
+	const tcpSocket = await connectAndWrite(proxyIP, proxyPort || portRemote);
 
 	// when remoteSocket is ready, pass to websocket
 	// remote--> ws
-	remoteSocketToWS(tcpSocket, webSocket, responseHeader, retry, log);
+	remoteSocketToWS(tcpSocket, webSocket, responseHeader, null, log);
 }
 
 /**
