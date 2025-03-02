@@ -7,6 +7,7 @@ import { connect } from 'cloudflare:sockets';
 let userID = 'bfe6b4ca-651c-45eb-9772-06e0cbf1c6f5';
 
 let proxyIP = '';
+let proxyPort = 0;
 
 export default {
 	/**
@@ -159,7 +160,7 @@ async function handleTCPOutBound(remoteSocket, addressRemote, portRemote, rawCli
 
 	// if the cf connect tcp socket have no incoming data, we retry to redirect ip
 	async function retry() {
-		const tcpSocket = await connectAndWrite(proxyIP || addressRemote, portRemote)
+		const tcpSocket = await connectAndWrite(proxyIP || addressRemote, proxyPort || portRemote)
 		// no matter retry success or not, close websocket
 		tcpSocket.closed.catch(error => {
 			console.log('retry tcpSocket closed error', error);
