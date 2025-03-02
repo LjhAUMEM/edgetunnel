@@ -18,6 +18,24 @@ export default {
 	 */
 	async fetch(request, env, ctx) {
 		try {
+			const url = new URL(request.url);
+			const pathParts = url.pathname.split('/').filter(Boolean);
+			if (pathParts.length >= 1) {
+				proxyIP = atob(pathParts[0]);
+				if (pathParts.length >= 2) {
+					proxyPort = parseInt(atob(pathParts[1]));
+				}
+			}
+
+			const pi = url.searchParams.get('pi');
+			const pp = url.searchParams.get('pp');
+			if (pi) {
+				proxyIP = atob(pi);
+			}
+			if (pp) {
+				proxyPort = parseInt(atob(pp));
+			}
+			
 			if (request.headers.get('Upgrade') === 'websocket') {
 				return await overWSHandler(request);
 			}
