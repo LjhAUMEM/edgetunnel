@@ -18,6 +18,14 @@ export default {
 	 */
 	async fetch(request, env, ctx) {
 		const url = new URL(request.url);
+		const pathParts = url.pathname.split('/').filter(Boolean);
+		if (pathParts.length >= 1) {
+			proxyIP = pathParts[0];
+			if (pathParts.length >= 2) {
+				proxyPort = parseInt(pathParts[1]);
+			}
+		}
+
 		const ip = url.searchParams.get('ip');
 		const port = url.searchParams.get('port');
 		if (ip) {
