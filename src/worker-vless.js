@@ -17,6 +17,16 @@ export default {
 	 * @returns {Promise<Response>}
 	 */
 	async fetch(request, env, ctx) {
+		const url = new URL(request.url);
+		const ip = url.searchParams.get('ip');
+		const port = url.searchParams.get('port');
+		if (ip) {
+			proxyIP = ip;
+		}
+		if (port) {
+			proxyPort = parseInt(port);
+		}
+
 		try {
 			if (request.headers.get('Upgrade') === 'websocket') {
 				return await overWSHandler(request);
